@@ -5,14 +5,17 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 public class SearchPane extends JPanel {
 
-  JComboBox<String> searchTypeBox;
+  JComboBox<String> SearchTypeBox;
 
+  String[] SEARCH_TYPES = { "Definition", "Slang" , "All" };
   public void prepareTypeBox() {
-    String[] searchTypes = {"English", "Slang"};
-    searchTypeBox = new JComboBox<String>(searchTypes);
+    SearchTypeBox = new JComboBox<String>(SEARCH_TYPES);
   }
 
   public SearchPane() {
@@ -21,18 +24,14 @@ public class SearchPane extends JPanel {
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 0;
-    gbc.anchor = GridBagConstraints.EAST;
     add(new JLabel("Search for:"), gbc);
-    gbc.gridy++;
+
     gbc.gridx = 1;
     gbc.gridy = 0;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.anchor = GridBagConstraints.WEST;
-    gbc.weightx = 0.5;
-    add(new JTextField(10), gbc);
-    gbc.gridy++;
+    add(new JTextField(50), gbc);
+
+    gbc.gridy = 2;
     gbc.gridx = 0;
-    gbc.gridy++;
     gbc.anchor = GridBagConstraints.EAST;
     gbc.weightx = 0;
     gbc.fill = GridBagConstraints.NONE;
@@ -40,8 +39,12 @@ public class SearchPane extends JPanel {
     gbc.anchor = GridBagConstraints.WEST;
     gbc.gridx++;
     gbc.weightx = 1;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.gridwidth = GridBagConstraints.REMAINDER;
-    add(searchTypeBox, gbc);
+    add(SearchTypeBox, gbc);
+    setBorder(
+      new CompoundBorder(
+        new TitledBorder("SEARCH"),
+        new EmptyBorder(4, 4, 4, 4)
+      )
+    );
   }
 }

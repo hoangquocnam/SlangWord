@@ -1,13 +1,9 @@
-import components.SearchPane;
+import components.FormPane;
 import java.awt.*;
 import java.com.Constant;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 
 public class Main {
 
@@ -38,26 +34,5 @@ public class Main {
         }
       }
     );
-  }
-
-  public class FormPane extends JPanel {
-
-    public FormPane() {
-      setBorder(new EmptyBorder(8, 8, 8, 8));
-      setLayout(new GridBagLayout());
-      GridBagConstraints gbc = new GridBagConstraints();
-      gbc.gridx = 0;
-      gbc.gridy = 0;
-      gbc.fill = GridBagConstraints.BOTH;
-      gbc.weightx = 1;
-      SearchPane searchPane = new SearchPane();
-      searchPane.setBorder(
-        new CompoundBorder(
-          new TitledBorder("Search"),
-          new EmptyBorder(4, 4, 4, 4)
-        )
-      );
-      add(searchPane, gbc);
-    }
   }
 }
