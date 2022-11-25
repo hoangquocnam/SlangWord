@@ -1,4 +1,4 @@
-package java.com;
+package utils;
 
 public final class Constant {
   private Constant() {

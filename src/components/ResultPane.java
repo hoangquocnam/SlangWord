@@ -2,12 +2,10 @@ package components;
 
 import java.awt.*;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -24,7 +22,7 @@ public class ResultPane extends JPanel {
     gbc.fill = GridBagConstraints.HORIZONTAL;
 
     gbc.gridwidth = GridBagConstraints.REMAINDER;
-    detailsPane.add(new JScrollPane(new JList()), gbc);
+    detailsPane.add(new JScrollPane(new JList<String>()), gbc);
     JPanel buttonsPane = new JPanel(new GridBagLayout());
     gbc = new GridBagConstraints();
     gbc.gridx = 0;

@@ -1,6 +1,8 @@
 package components;
 
 import java.awt.*;
+
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -14,46 +16,50 @@ public class SearchPane extends JPanel {
 
   JComboBox<String> SearchTypeBox;
   JButton SearchButton;
+  JTextField SearchField;
   static String[] SEARCH_TYPES = { "Definition", "Slang", "All" };
 
-  public void prepareTypeBox() {
+  public void prepareUI() {
     SearchTypeBox = new JComboBox<String>(SEARCH_TYPES);
+    SearchButton = new JButton("Search");
+    SearchField = new JTextField(20);
+
+    SearchButton.setSize(100, 20);
   }
 
   public SearchPane() {
-    prepareTypeBox();
-    setLayout(new GridBagLayout());
-    GridBagConstraints gbc = new GridBagConstraints();
+    prepareUI();
+    setLayout(new BorderLayout());
+    JPanel panel = new JPanel();
+    BoxLayout boxLayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+    panel.setLayout(boxLayout);
 
     // KEYWORD
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    add(new JLabel("Search for:"), gbc);
-
-    gbc.gridx = 1;
-    gbc.gridy = 0;
-    add(new JTextField(50), gbc);
+    JPanel keywordPane = new JPanel(new FlowLayout());
+    keywordPane.add(new JLabel("Search for:"), BorderLayout.LINE_START);
+    keywordPane.add(SearchField, BorderLayout.LINE_END);
 
     //SELECT SEARCH TYPE
-    gbc.gridy = 1;
-    gbc.gridx = 0;
-    gbc.anchor = GridBagConstraints.EAST;
-    gbc.weightx = 0;
-    gbc.fill = GridBagConstraints.NONE;
-    add(new JLabel("By:"), gbc);
+    JPanel searchTypePane = new JPanel(new FlowLayout());
+    searchTypePane.add(new JLabel("By:"));
+    searchTypePane.add(SearchTypeBox);
 
-    gbc.anchor = GridBagConstraints.WEST;
-    gbc.gridx++;
-    gbc.weightx = 1;
-    add(SearchTypeBox, gbc);
 
-    //BUTTON
-    SearchButton = new JButton("Search");
-    gbc.gridy = 3;
-    gbc.gridx = 2;
-    gbc.anchor = GridBagConstraints.EAST;
-    gbc.weightx = 1;
-    add(SearchButton, gbc);
+    
+    // //BUTTON
+    // SearchButton = new JButton("Search");
+    // gbc.gridy = 3;
+    // gbc.gridx = 2;
+    // gbc.anchor = GridBagConstraints.EAST;
+    // gbc.weightx = 1;
+    // add(SearchButton, gbc);
+    
+    panel.add(keywordPane, BorderLayout.PAGE_START);
+    panel.add(searchTypePane, BorderLayout.CENTER);
+    panel.add(SearchButton, BorderLayout.CENTER);
+    add(panel);
+
+    setToolTipText("Search for a slang word");
 
     setBorder(
       new CompoundBorder(
