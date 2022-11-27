@@ -25,6 +25,7 @@ public class SearchPane extends JPanel {
     SearchField = new JTextField(20);
 
     SearchButton.setSize(100, 20);
+    SearchField.addActionListener(e -> SearchButton.doClick());
   }
 
   public SearchPane() {
@@ -45,15 +46,7 @@ public class SearchPane extends JPanel {
     searchTypePane.add(SearchTypeBox);
 
 
-    
-    // //BUTTON
-    // SearchButton = new JButton("Search");
-    // gbc.gridy = 3;
-    // gbc.gridx = 2;
-    // gbc.anchor = GridBagConstraints.EAST;
-    // gbc.weightx = 1;
-    // add(SearchButton, gbc);
-    
+  
     panel.add(keywordPane, BorderLayout.PAGE_START);
     panel.add(searchTypePane, BorderLayout.CENTER);
     panel.add(SearchButton, BorderLayout.CENTER);
