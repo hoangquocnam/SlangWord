@@ -11,10 +11,6 @@ public class SlangManager {
   static TreeMap<String, ArrayList<String>> slangMap = new TreeMap<String, ArrayList<String>>();
   static DatasourceManager datasourceManager = new DatasourceManager();
 
-  public void removeSlang(String slang) {
-    slangMap.remove(slang);
-  }
-
   public ArrayList<String> getMeaning(String slang) {
     return slangMap.get(slang);
   }
@@ -198,5 +194,21 @@ public class SlangManager {
       return false;
     }
     return true;
+  }
+
+  public void removeSlang(String slang) {
+    try{
+
+      // Ask user to confirm
+      System.out.println("Are you sure you want to delete this slang? (Y/N)");
+      String answer = System.console().readLine();
+      if (answer.toLowerCase().equals("y") || answer.toLowerCase().equals("yes")) {
+        slangMap.remove(slang);
+        datasourceManager.removeLine(Constant.USER_SLANG_DATASOURCE, slang);
+      }
+      
+    } catch (Exception e) {
+      System.out.println("Slang word: " + slang + " does not exist");
+    }
   }
 }

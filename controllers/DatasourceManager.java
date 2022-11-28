@@ -108,14 +108,13 @@ public class DatasourceManager {
         if (line.contains(slang)) {
           if (!isOverwrite) {
             newLine = line + "| " + data;
-          }
-          else {
+          } else {
             newLine = slang + "`" + data;
           }
         } else {
           newLine = line;
         }
-        fileContent+= newLine;
+        fileContent += newLine;
         fileContent += System.lineSeparator();
         line = bufferedReader.readLine();
       }
@@ -131,5 +130,34 @@ public class DatasourceManager {
       return false;
     }
     return true;
+  }
+
+  public void removeLine(String filePath, String slang) {
+    try {
+      File file = new File(filePath);
+      if (!file.exists()) {
+        file.createNewFile();
+      }
+
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+      String line = bufferedReader.readLine();
+      String fileContent = "";
+      while (line != null) {
+        if (!line.contains(slang)) {
+          fileContent += line;
+          fileContent += System.lineSeparator();
+        }
+        line = bufferedReader.readLine();
+      }
+      bufferedReader.close();
+
+      BufferedWriter bufferedWriter = new BufferedWriter(
+        new FileWriter(filePath)
+      );
+      bufferedWriter.write(fileContent);
+      bufferedWriter.close();
+    } catch (Exception e) {
+      System.out.println(e);
+    }
   }
 }

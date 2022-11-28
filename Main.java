@@ -21,16 +21,13 @@ public class Main {
     slangManager.searchBySlang("ALL- NIGHTER");
   
     ArrayList<String> meaning = new ArrayList<String>();
-    meaning.add("B");
-    meaning.add("C");
+    meaning.add("Alpha Beta Unlimited");
 
-    slangManager.addSlang("AAAAAB", meaning);
 
-    ArrayList<String> newMeaning = new ArrayList<String>();
-    newMeaning.add("D");
+    slangManager.removeSlang("ABU");
 
-    slangManager.addSlang("AAAAAB", newMeaning);
   }
+
 
   public Main() {
     EventQueue.invokeLater(
