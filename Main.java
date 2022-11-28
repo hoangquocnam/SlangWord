@@ -17,6 +17,8 @@ public class Main {
     slangManager.searchByKeyword("God");
 
     slangManager.searchBySlang("ALL- NIGHTER");
+
+    slangManager.showHistory();
   }
 
   public Main() {

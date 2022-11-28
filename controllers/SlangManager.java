@@ -4,31 +4,31 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.TreeMap;
+import utils.Constant;
 
 public class SlangManager {
 
-  static String datasource = "assets/slang.txt";
-  static String slangHistory = "log/slang.txt";
-  static String keywordHistory = "log/keyword.txt";
   static TreeMap<String, ArrayList<String>> slangMap = new TreeMap<String, ArrayList<String>>();
   static DatasourceManager datasourceManager = new DatasourceManager();
 
-  enum SlangType {
-    SLANG,
-    MEANING,
-    KEYWORD,
-  }
-
   public void addSlang(String slang, ArrayList<String> meaning) {
-    slangMap.put(slang, meaning);
+    if (slangMap.containsKey(slang)) {
+      System.out.println("Slang word: " + slang + " already exists");
+    } else {
+      slangMap.put(slang, meaning);
+      String data = slang + " : " + String.join(", ", meaning);
+      datasourceManager.writeData(Constant.USER_SLANG_DATASOURCE, data);
+    }
   }
 
   public void removeSlang(String slang) {
     slangMap.remove(slang);
   }
 
-  public void logHistory(SlangType type, String data) {
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+  public void logHistory(Constant.SlangType type, String data) {
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
+      Constant.TIME_LOG_FORMAT
+    );
     LocalDateTime now = LocalDateTime.now();
     String timeLog = '[' + dtf.format(now) + ']' + " ----- ";
 
@@ -39,14 +39,17 @@ public class SlangManager {
           meaning += m + ", ";
         }
         String historySlang = timeLog + data + ":" + meaning;
-        datasourceManager.writeData(slangHistory, historySlang);
+        datasourceManager.writeData(Constant.SLANG_HISTORY_PATH, historySlang);
         break;
       case MEANING:
-        datasourceManager.writeData(slangHistory, data);
+        datasourceManager.writeData(Constant.SLANG_HISTORY_PATH, data);
         break;
       case KEYWORD:
         String historyKeyWord = timeLog + data;
-        datasourceManager.writeData(keywordHistory, historyKeyWord);
+        datasourceManager.writeData(
+          Constant.KEYWORD_HISTORY_PATH,
+          historyKeyWord
+        );
         break;
       default:
         break;
@@ -64,7 +67,7 @@ public class SlangManager {
         result.add(slang);
       }
     }
-    logHistory(SlangType.SLANG, keyword);
+    logHistory(Constant.SlangType.SLANG, keyword);
     return result;
   }
 
@@ -79,15 +82,31 @@ public class SlangManager {
           }
         }
       }
-      logHistory(SlangType.KEYWORD, keyword);
+      logHistory(Constant.SlangType.KEYWORD, keyword);
       return slangList;
     } catch (Exception e) {
       return null;
     }
   }
 
+  public void setUserSlang() {
+    datasourceManager.copyFile(
+      Constant.DATASOURCE,
+      Constant.USER_SLANG_DATASOURCE
+    );
+  }
+
   public void loadSlangs() {
-    ArrayList<String> data = datasourceManager.getData(datasource);
+    ArrayList<String> data = new ArrayList<String>();
+    if (datasourceManager.checkFileExist(Constant.USER_SLANG_DATASOURCE)) {
+      System.out.println("User slang file exists");
+      data = datasourceManager.getData(Constant.USER_SLANG_DATASOURCE);
+    } else {
+      setUserSlang();
+      System.out.println("User slang file not exists");
+
+      data = datasourceManager.getData(Constant.USER_SLANG_DATASOURCE);
+    }
 
     for (int i = 0; i < data.size(); i++) {
       String[] slang = data.get(i).split("`");
@@ -100,6 +119,24 @@ public class SlangManager {
         }
         addSlang(slangName, slangMeaning);
       }
+    }
+  }
+
+  public void showHistory() {
+    ArrayList<String> slangHistoryList = datasourceManager.getData(
+      Constant.SLANG_HISTORY_PATH
+    );
+    ArrayList<String> keywordHistoryList = datasourceManager.getData(
+      Constant.KEYWORD_HISTORY_PATH
+    );
+
+    System.out.println("Slang History:");
+    for (String slang : slangHistoryList) {
+      System.out.println(slang);
+    }
+    System.out.println("Keyword History:");
+    for (String keyword : keywordHistoryList) {
+      System.out.println(keyword);
     }
   }
 }

@@ -5,14 +5,16 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DatasourceManager {
 
-
   public ArrayList<String> getData(String filePath) {
     try {
-      BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+      BufferedReader bufferedReader = new BufferedReader(
+        new FileReader(filePath)
+      );
       ArrayList<String> data = new ArrayList<String>();
 
       String line = bufferedReader.readLine();
@@ -42,9 +44,48 @@ public class DatasourceManager {
       bufferedWriter.write(data);
       bufferedWriter.newLine();
       bufferedWriter.close();
-
     } catch (Exception e) {
       System.out.println(e);
     }
   }
+
+  public void copyFile(String source, String dest) {
+    try {
+      File sourceFile = new File(source);
+      File destFile = new File(dest);
+
+      BufferedReader bufferedReader = new BufferedReader(
+        new FileReader(sourceFile)
+      );
+      BufferedWriter bufferedWriter = new BufferedWriter(
+        new FileWriter(destFile)
+      );
+
+      String line = bufferedReader.readLine();
+      while (line != null) {
+        bufferedWriter.write(line);
+        bufferedWriter.newLine();
+        line = bufferedReader.readLine();
+      }
+
+      bufferedReader.close();
+      bufferedWriter.close();
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+  }
+
+  public boolean checkFileExist(String filePath) {
+    File file = new File(filePath);
+    if (!file.exists()) {
+      try {
+        file.createNewFile();
+        return false;
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    return true;
+  }
+  
 }
