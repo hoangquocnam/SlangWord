@@ -3,9 +3,11 @@ package controllers;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class DatasourceManager {
@@ -158,6 +160,15 @@ public class DatasourceManager {
       bufferedWriter.close();
     } catch (Exception e) {
       System.out.println(e);
+    }
+  }
+
+  public void clearFile(String filePath) {
+    try (PrintWriter writer = new PrintWriter(filePath)) {
+      writer.print("");
+      writer.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
     }
   }
 }

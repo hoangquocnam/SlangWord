@@ -16,15 +16,20 @@ public class Main {
     // new Main();
     slangManager.loadSlangs();
 
-    slangManager.searchByKeyword("God");
+    // slangManager.searchByKeyword("God");
 
-    slangManager.searchBySlang("ALL- NIGHTER");
+    // slangManager.searchBySlang("WHEW");
+    // slangManager.searchBySlang("ABU");
+
+    slangManager.showHistory(Constant.SlangType.SLANG);
   
-    ArrayList<String> meaning = new ArrayList<String>();
-    meaning.add("Alpha Beta Unlimited");
+    // ArrayList<String> meaning = new ArrayList<String>();
+    // meaning.add("Alpha Beta Unlimited");
 
 
-    slangManager.removeSlang("ABU");
+    // slangManager.removeSlang("ABU");
+
+    // slangManager.resetSlang();
 
   }
 

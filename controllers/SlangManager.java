@@ -9,6 +9,7 @@ import utils.Constant;
 public class SlangManager {
 
   static TreeMap<String, ArrayList<String>> slangMap = new TreeMap<String, ArrayList<String>>();
+  static TreeMap<String, ArrayList<String>> historyMap = new TreeMap<String, ArrayList<String>>();
   static DatasourceManager datasourceManager = new DatasourceManager();
 
   public ArrayList<String> getMeaning(String slang) {
@@ -22,17 +23,9 @@ public class SlangManager {
     );
   }
 
-  public void loadSlangs() {
-    ArrayList<String> data = new ArrayList<String>();
-    if (datasourceManager.checkFileExist(Constant.USER_SLANG_DATASOURCE)) {
-      data = datasourceManager.getData(Constant.USER_SLANG_DATASOURCE);
-    } else {
-      setUserSlang();
-      data = datasourceManager.getData(Constant.USER_SLANG_DATASOURCE);
-    }
-
-    for (int i = 0; i < data.size(); i++) {
-      String[] slang = data.get(i).split("`");
+  public void setSlangList(ArrayList<String> slangList) {
+    for (int i = 0; i < slangList.size(); i++) {
+      String[] slang = slangList.get(i).split("`");
       if (slang.length == 2) {
         String slangName = slang[0];
         String[] slangMeaningArray = slang[1].split("\\| ");
@@ -45,21 +38,67 @@ public class SlangManager {
     }
   }
 
+  public void loadHistory() {
+    ArrayList<String> historyLog = datasourceManager.getData(
+      Constant.SLANG_HISTORY_PATH
+    );
+
+    
+    for (String log : historyLog) {
+      ArrayList<String> history = new ArrayList<String>();
+      String slangHistory = log.split(Constant.LOG_SEPARATOR_TIME_CONTENT)[1];
+      String slang = slangHistory.split(
+        Constant.LOG_SEPARATOR_SLANG_DEFINITION
+      )[0];
+      String meanings = slangHistory.split(
+        Constant.LOG_SEPARATOR_SLANG_DEFINITION
+      )[1];
+
+      String[] meaningArray = meanings.split(
+        Constant.LOG_SEPARATOR_DEFINITION_DEFINITION
+        );
+      for (String meaning : meaningArray) {
+        history.add(meaning);
+      }
+
+      historyMap.put(slang, history);
+    }
+  }
+
+  public void loadSlangs() {
+    ArrayList<String> data = new ArrayList<String>();
+    if (datasourceManager.checkFileExist(Constant.USER_SLANG_DATASOURCE)) {
+      data = datasourceManager.getData(Constant.USER_SLANG_DATASOURCE);
+    } else {
+      setUserSlang();
+      data = datasourceManager.getData(Constant.USER_SLANG_DATASOURCE);
+    }
+
+    setSlangList(data);
+    loadHistory();
+  }
+
   public void logHistory(Constant.SlangType type, String data) {
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern(
       Constant.TIME_LOG_FORMAT
     );
     LocalDateTime now = LocalDateTime.now();
-    String timeLog = '[' + dtf.format(now) + ']' + " ----- ";
+    String timeLog =
+      '[' + dtf.format(now) + ']' + Constant.LOG_SEPARATOR_TIME_CONTENT;
 
     switch (type) {
       case SLANG:
         String meaning = "";
         if (getMeaning(data) != null) {
           for (String m : getMeaning(data)) {
-            meaning += m + ", ";
+            if (m == getMeaning(data).get(0)) {
+              meaning += m;
+            } else {
+              meaning += Constant.LOG_SEPARATOR_DEFINITION_DEFINITION + m;
+            }
           }
-          String historySlang = timeLog + data + ":" + meaning;
+          String historySlang =
+            timeLog + data + Constant.LOG_SEPARATOR_SLANG_DEFINITION + meaning;
           datasourceManager.writeData(
             Constant.SLANG_HISTORY_PATH,
             historySlang
@@ -111,21 +150,29 @@ public class SlangManager {
     }
   }
 
-  public void showHistory() {
-    ArrayList<String> slangHistoryList = datasourceManager.getData(
-      Constant.SLANG_HISTORY_PATH
-    );
-    ArrayList<String> keywordHistoryList = datasourceManager.getData(
-      Constant.KEYWORD_HISTORY_PATH
-    );
-
-    System.out.println("Slang History:");
-    for (String slang : slangHistoryList) {
-      System.out.println(slang);
+  public void showHistory(Constant.SlangType type) {
+    if (type == null) {
+      return;
     }
-    System.out.println("Keyword History:");
-    for (String keyword : keywordHistoryList) {
-      System.out.println(keyword);
+    switch (type) {
+      case SLANG:
+        for (String slang : historyMap.keySet()) {
+          System.out.println(slang);
+          for (String meaning : historyMap.get(slang)) {
+            System.out.println(meaning);
+          }
+        }
+        break;
+      case KEYWORD:
+        ArrayList<String> keywordLog = datasourceManager.getData(
+          Constant.KEYWORD_HISTORY_PATH
+        );
+        for (String log : keywordLog) {
+          System.out.println(log);
+        }
+        break;
+      default:
+        break;
     }
   }
 
@@ -145,14 +192,15 @@ public class SlangManager {
       if (slangMap.containsKey(slang)) {
         ArrayList<String> oldMeaning = slangMap.get(slang);
         String meaningText = "";
-        
 
         System.out.println("Slang word: " + slang + " already exists");
         System.out.println("Do you want to update the meaning? (Y/N)");
         //TODO: handle with UI later - get text from UI
         String answer = System.console().readLine();
 
-        if (answer.toLowerCase().equals("y") || answer.toLowerCase().equals("yes"))  {
+        if (
+          answer.toLowerCase().equals("y") || answer.toLowerCase().equals("yes")
+        ) {
           for (String m : meaning) {
             if (m != meaning.get(meaning.size() - 1)) {
               meaningText += m + "| ";
@@ -197,18 +245,30 @@ public class SlangManager {
   }
 
   public void removeSlang(String slang) {
-    try{
-
+    try {
       // Ask user to confirm
       System.out.println("Are you sure you want to delete this slang? (Y/N)");
       String answer = System.console().readLine();
-      if (answer.toLowerCase().equals("y") || answer.toLowerCase().equals("yes")) {
+      if (
+        answer.toLowerCase().equals("y") || answer.toLowerCase().equals("yes")
+      ) {
         slangMap.remove(slang);
         datasourceManager.removeLine(Constant.USER_SLANG_DATASOURCE, slang);
       }
-      
     } catch (Exception e) {
       System.out.println("Slang word: " + slang + " does not exist");
+    }
+  }
+
+  public void resetSlang() {
+    try {
+      slangMap.clear();
+      datasourceManager.clearFile(Constant.USER_SLANG_DATASOURCE);
+      setUserSlang();
+      ArrayList<String> data = new ArrayList<String>();
+      setSlangList(data);
+    } catch (Exception e) {
+      System.out.println("Error when reset slang");
     }
   }
 }

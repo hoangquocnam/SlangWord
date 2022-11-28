@@ -22,4 +22,8 @@ public final class Constant {
   public static String KEYWORD_HISTORY_PATH = "log/history/keyword.txt";
 
   public static String TIME_LOG_FORMAT = "yyyy/MM/dd HH:mm:ss";
+
+  public static String LOG_SEPARATOR_TIME_CONTENT = " ----- ";
+  public static String LOG_SEPARATOR_SLANG_DEFINITION = ":";
+  public static String LOG_SEPARATOR_DEFINITION_DEFINITION = "\\| ";
 }
