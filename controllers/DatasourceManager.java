@@ -87,5 +87,49 @@ public class DatasourceManager {
     }
     return true;
   }
-  
+
+  public boolean addDefinition(
+    String filePath,
+    String slang,
+    String data,
+    boolean isOverwrite
+  ) {
+    try {
+      File file = new File(filePath);
+      if (!file.exists()) {
+        file.createNewFile();
+      }
+
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+      String line = bufferedReader.readLine();
+      String fileContent = "";
+      while (line != null) {
+        String newLine = "";
+        if (line.contains(slang)) {
+          if (!isOverwrite) {
+            newLine = line + "| " + data;
+          }
+          else {
+            newLine = slang + "`" + data;
+          }
+        } else {
+          newLine = line;
+        }
+        fileContent+= newLine;
+        fileContent += System.lineSeparator();
+        line = bufferedReader.readLine();
+      }
+      bufferedReader.close();
+
+      BufferedWriter bufferedWriter = new BufferedWriter(
+        new FileWriter(filePath)
+      );
+      bufferedWriter.write(fileContent);
+      bufferedWriter.close();
+    } catch (Exception e) {
+      System.out.println(e);
+      return false;
+    }
+    return true;
+  }
 }

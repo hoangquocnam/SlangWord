@@ -1,6 +1,8 @@
 import components.FormPane;
 import controllers.SlangManager;
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -17,8 +19,17 @@ public class Main {
     slangManager.searchByKeyword("God");
 
     slangManager.searchBySlang("ALL- NIGHTER");
+  
+    ArrayList<String> meaning = new ArrayList<String>();
+    meaning.add("B");
+    meaning.add("C");
 
-    slangManager.showHistory();
+    slangManager.addSlang("AAAAAB", meaning);
+
+    ArrayList<String> newMeaning = new ArrayList<String>();
+    newMeaning.add("D");
+
+    slangManager.addSlang("AAAAAB", newMeaning);
   }
 
   public Main() {
