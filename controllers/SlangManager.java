@@ -1,13 +1,23 @@
 package controllers;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class SlangManager {
 
   static String datasource = "assets/slang.txt";
-  static HashMap<String, ArrayList<String>> slangMap = new HashMap<String, ArrayList<String>>();
+  static String slangHistory = "log/slang.txt";
+  static String keywordHistory = "log/keyword.txt";
+  static TreeMap<String, ArrayList<String>> slangMap = new TreeMap<String, ArrayList<String>>();
   static DatasourceManager datasourceManager = new DatasourceManager();
+
+  enum SlangType {
+    SLANG,
+    MEANING,
+    KEYWORD,
+  }
 
   public void addSlang(String slang, ArrayList<String> meaning) {
     slangMap.put(slang, meaning);
@@ -17,24 +27,63 @@ public class SlangManager {
     slangMap.remove(slang);
   }
 
+  public void logHistory(SlangType type, String data) {
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    LocalDateTime now = LocalDateTime.now();
+    String timeLog = '[' + dtf.format(now) + ']' + " ----- ";
+
+    switch (type) {
+      case SLANG:
+        String meaning = "";
+        for (String m : getMeaning(data)) {
+          meaning += m + ", ";
+        }
+        String historySlang = timeLog + data + ":" + meaning;
+        datasourceManager.writeData(slangHistory, historySlang);
+        break;
+      case MEANING:
+        datasourceManager.writeData(slangHistory, data);
+        break;
+      case KEYWORD:
+        String historyKeyWord = timeLog + data;
+        datasourceManager.writeData(keywordHistory, historyKeyWord);
+        break;
+      default:
+        break;
+    }
+  }
+
   public ArrayList<String> getMeaning(String slang) {
     return slangMap.get(slang);
   }
 
-  public ArrayList<String> getSlangByKeyword(String keyword) {
-    ArrayList<String> slangList = new ArrayList<String>();
+  public ArrayList<String> searchBySlang(String keyword) {
+    ArrayList<String> result = new ArrayList<String>();
     for (String slang : slangMap.keySet()) {
-      ArrayList<String> meaningOfSlang = getMeaning(slang);
-      for (String meaning : meaningOfSlang) {
-        if (meaning.contains(keyword)) {
-          slangList.add(slang);
-        }
+      if (slang.contains(keyword)) {
+        result.add(slang);
       }
     }
-    for (String slang : slangList) {
-      System.out.println(slang);
+    logHistory(SlangType.SLANG, keyword);
+    return result;
+  }
+
+  public ArrayList<String> searchByKeyword(String keyword) {
+    try {
+      ArrayList<String> slangList = new ArrayList<String>();
+      for (String slang : slangMap.keySet()) {
+        ArrayList<String> meaningOfSlang = getMeaning(slang);
+        for (String meaning : meaningOfSlang) {
+          if (meaning.contains(keyword)) {
+            slangList.add(slang);
+          }
+        }
+      }
+      logHistory(SlangType.KEYWORD, keyword);
+      return slangList;
+    } catch (Exception e) {
+      return null;
     }
-    return slangList;
   }
 
   public void loadSlangs() {
@@ -48,7 +97,6 @@ public class SlangManager {
         ArrayList<String> slangMeaning = new ArrayList<String>();
         for (int j = 0; j < slangMeaningArray.length; j++) {
           slangMeaning.add(slangMeaningArray[j]);
-          // System.out.println(slangMeaningArray[j]);
         }
         addSlang(slangName, slangMeaning);
       }
