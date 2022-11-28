@@ -1,5 +1,7 @@
 import components.FormPane;
 import controllers.SlangManager;
+import controllers.SlangManager.Slang;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -20,8 +22,6 @@ public class Main {
 
     // slangManager.searchBySlang("WHEW");
     // slangManager.searchBySlang("ABU");
-
-    slangManager.showHistory(Constant.SlangType.SLANG);
   
     // ArrayList<String> meaning = new ArrayList<String>();
     // meaning.add("Alpha Beta Unlimited");
@@ -30,6 +30,10 @@ public class Main {
     // slangManager.removeSlang("ABU");
 
     // slangManager.resetSlang();
+
+    Slang slang = slangManager.getRandomSlang();
+
+    System.out.println(slang.getSlang() + " " + slang.getMeaning());
 
   }
 

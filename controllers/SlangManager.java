@@ -3,14 +3,42 @@ package controllers;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.TreeMap;
 import utils.Constant;
 
 public class SlangManager {
 
+  public class Slang {
+    private String slang;
+    private ArrayList<String> meaning;
+
+    public Slang(String slang, ArrayList<String> meaning) {
+      this.slang = slang;
+      this.meaning = meaning;
+    }
+
+    public String getSlang() {
+      return slang;
+    }
+
+    public void setSlang(String slang) {
+      this.slang = slang;
+    }
+
+    public ArrayList<String> getMeaning() {
+      return meaning;
+    }
+
+    public void setMeaning(ArrayList<String> meaning) {
+      this.meaning = meaning;
+    }
+  }
+
   static TreeMap<String, ArrayList<String>> slangMap = new TreeMap<String, ArrayList<String>>();
   static TreeMap<String, ArrayList<String>> historyMap = new TreeMap<String, ArrayList<String>>();
   static DatasourceManager datasourceManager = new DatasourceManager();
+
 
   public ArrayList<String> getMeaning(String slang) {
     return slangMap.get(slang);
@@ -270,5 +298,18 @@ public class SlangManager {
     } catch (Exception e) {
       System.out.println("Error when reset slang");
     }
+  }
+
+  public Slang getRandomSlang(){
+    Random rand = new Random();
+    int randomIndex = rand.nextInt(slangMap.size());
+    int i = 0;
+    for (String key : slangMap.keySet()) {
+      if (i == randomIndex) {
+        return new Slang(key, slangMap.get(key));
+      }
+      i++;
+    }
+    return null;
   }
 }
