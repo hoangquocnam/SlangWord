@@ -1,4 +1,5 @@
 import components.FormPane;
+import controllers.SlangManager;
 import utils.Constant;
 
 import java.awt.*;
@@ -8,9 +9,12 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
-
+  static SlangManager slangManager = new SlangManager();
   public static void main(String[] args) {
-    new Main();
+    // new Main();
+    slangManager.loadSlangs();
+
+    slangManager.getSlangByKeyword("god");
   }
 
   public Main() {
