@@ -11,6 +11,7 @@ import utils.Constant;
 public class SlangManager {
 
   public class Slang {
+
     private String slang;
     private ArrayList<String> meaning;
 
@@ -39,7 +40,6 @@ public class SlangManager {
   static TreeMap<String, ArrayList<String>> slangMap = new TreeMap<String, ArrayList<String>>();
   static TreeMap<String, ArrayList<String>> historyMap = new TreeMap<String, ArrayList<String>>();
   static DatasourceManager datasourceManager = new DatasourceManager();
-
 
   public ArrayList<String> getMeaning(String slang) {
     return slangMap.get(slang);
@@ -72,7 +72,6 @@ public class SlangManager {
       Constant.SLANG_HISTORY_PATH
     );
 
-    
     for (String log : historyLog) {
       ArrayList<String> history = new ArrayList<String>();
       String slangHistory = log.split(Constant.LOG_SEPARATOR_TIME_CONTENT)[1];
@@ -85,7 +84,7 @@ public class SlangManager {
 
       String[] meaningArray = meanings.split(
         Constant.LOG_SEPARATOR_DEFINITION_DEFINITION
-        );
+      );
       for (String meaning : meaningArray) {
         history.add(meaning);
       }
@@ -301,7 +300,7 @@ public class SlangManager {
     }
   }
 
-  public Slang getRandomSlang(){
+  public Slang getRandomSlang() {
     Random rand = new Random();
     int randomIndex = rand.nextInt(slangMap.size());
     int i = 0;
@@ -314,7 +313,7 @@ public class SlangManager {
     return null;
   }
 
-  public void quizSlangGame(){
+  public void quizSlangGame() {
     Slang quizSlang = getRandomSlang();
     System.out.println("What is the meaning of " + quizSlang.getSlang() + "?");
     // generate 4 random definition
@@ -332,9 +331,11 @@ public class SlangManager {
     }
     System.out.println("Your answer: ");
     String answer = System.console().readLine();
-    if (randomDefinition.get(Integer.parseInt(answer) - 1).equals(
-      quizSlang.getMeaning().get(0)
-    )) {
+    if (
+      randomDefinition
+        .get(Integer.parseInt(answer) - 1)
+        .equals(quizSlang.getMeaning().get(0))
+    ) {
       System.out.println("Correct!");
     } else {
       System.out.println("Wrong!");
@@ -343,7 +344,9 @@ public class SlangManager {
 
   public void quizDefinitionGame() {
     Slang quizSlang = getRandomSlang();
-    System.out.println("What is the slang word of " + quizSlang.getMeaning().get(0) + "?");
+    System.out.println(
+      "What is the slang word of " + quizSlang.getMeaning().get(0) + "?"
+    );
     ArrayList<String> randomSlang = new ArrayList<String>();
     randomSlang.add(quizSlang.getSlang());
     while (randomSlang.size() < 4) {
@@ -360,23 +363,30 @@ public class SlangManager {
 
     System.out.println("Your answer: ");
     String answer = System.console().readLine();
-    if (randomSlang.get(Integer.parseInt(answer) - 1).equals(
-      quizSlang.getSlang()
-    )) {
+    if (
+      randomSlang.get(Integer.parseInt(answer) - 1).equals(quizSlang.getSlang())
+    ) {
       System.out.println("Correct!");
     } else {
       System.out.println("Wrong!");
     }
-
-
   }
 
-  public boolean editSlang(String slangName){
+  public boolean editSlang(String oldSlangName, String newSlangName) {
     // change the slang name
-    ArrayList<String> meaning = slangMap.get(slangName);
-    // try {
-      
-    // }
+    ArrayList<String> meaning = slangMap.get(oldSlangName);
+    try {
+      slangMap.remove(oldSlangName);
+      slangMap.put(newSlangName, meaning);
+      Slang newSlang = new Slang(newSlangName, meaning);
+      datasourceManager.updateSlang(
+        Constant.USER_SLANG_DATASOURCE,
+        oldSlangName,
+        newSlang
+      );
+    } catch (Exception e) {
+      return false;
+    }
     return true;
   }
 }

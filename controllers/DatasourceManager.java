@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.SlangManager.Slang;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import utils.Constant;
 
 public class DatasourceManager {
 
@@ -169,6 +171,54 @@ public class DatasourceManager {
       writer.close();
     } catch (FileNotFoundException e) {
       e.printStackTrace();
+    }
+  }
+
+  public void updateSlang(
+    String filePath,
+    String oldSlang,
+    Slang newSlangWord
+  ) {
+    try {
+      File file = new File(filePath);
+      if (!file.exists()) {
+        file.createNewFile();
+      }
+
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+      String line = bufferedReader.readLine();
+      String fileContent = "";
+      String meaning = "";
+      for (String s : newSlangWord.getMeaning()) {
+        if (
+          s !=
+          newSlangWord.getMeaning().get(newSlangWord.getMeaning().size() - 1)
+        ) {
+          meaning += s + Constant.LOG_SEPARATOR_DEFINITION_DEFINITION;
+        } else {
+          meaning += s;
+        }
+      }
+
+      while (line != null) {
+        if (line.contains(oldSlang)) {
+          fileContent +=
+            newSlangWord.getSlang() + Constant.DB_SEPARATOR_SLANG_DEFINITION + meaning;
+        } else {
+          fileContent += line;
+        }
+        fileContent += System.lineSeparator();
+        line = bufferedReader.readLine();
+      }
+      bufferedReader.close();
+
+      BufferedWriter bufferedWriter = new BufferedWriter(
+        new FileWriter(filePath)
+      );
+      bufferedWriter.write(fileContent);
+      bufferedWriter.close();
+    } catch (Exception e) {
+      System.out.println(e);
     }
   }
 }
