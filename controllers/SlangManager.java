@@ -1,4 +1,5 @@
 package controllers;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -138,7 +139,18 @@ public class SlangManager {
 
         break;
       case MEANING:
-        datasourceManager.writeData(Constant.SLANG_HISTORY_PATH, data);
+        String slang = "";
+        for (String key : slangMap.keySet()) {
+          if (slangMap.get(key).contains(data)) {
+            slang = key;
+          }
+        }
+        String historyMeaning =
+          timeLog + slang + Constant.LOG_SEPARATOR_SLANG_DEFINITION + data;
+        datasourceManager.writeData(
+          Constant.MEANING_HISTORY_PATH,
+          historyMeaning
+        );
         break;
       case KEYWORD:
         String historyKeyWord = timeLog + data;
@@ -163,7 +175,7 @@ public class SlangManager {
     return result;
   }
 
-  public TreeMap<String, ArrayList<String>> searchByKeyword(String keyword) {
+  public TreeMap<String, ArrayList<String>> searchByDefinition(String keyword) {
     try {
       TreeMap<String, ArrayList<String>> result = new TreeMap<String, ArrayList<String>>();
       for (String slang : slangMap.keySet()) {
@@ -173,11 +185,27 @@ public class SlangManager {
           }
         }
       }
-      logHistory(Constant.SlangType.KEYWORD, keyword);
+      logHistory(Constant.SlangType.MEANING, keyword);
       return result;
     } catch (Exception e) {
       return null;
     }
+  }
+
+  public TreeMap<String, ArrayList<String>> searchByAll(String keyword) {
+    TreeMap<String, ArrayList<String>> result = new TreeMap<String, ArrayList<String>>();
+    for (String slang : slangMap.keySet()) {
+      if (slang.contains(keyword)) {
+        result.put(slang, slangMap.get(slang));
+      }
+      for (String meaning : slangMap.get(slang)) {
+        if (meaning.contains(keyword)) {
+          result.put(slang, slangMap.get(slang));
+        }
+      }
+    }
+    logHistory(Constant.SlangType.KEYWORD, keyword);
+    return result;
   }
 
   public void showHistory(Constant.SlangType type) {

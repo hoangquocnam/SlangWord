@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import utils.Constant;
 
 public class FormPane extends JPanel {
@@ -69,10 +72,51 @@ public class FormPane extends JPanel {
       new ActionListener() {
         public void actionPerformed(ActionEvent event) {
           String keyword = SearchField.getText();
-          searchTable(slangManager.searchBySlang(keyword));
+          String type = SearchTypeBox.getSelectedItem().toString();
+          if (type.equals(Constant.SEARCH_TYPES[0])) {
+            searchTable(slangManager.searchBySlang(keyword));
+          } else if (type.equals(Constant.SEARCH_TYPES[1])) {
+            searchTable(slangManager.searchByDefinition(keyword));
+          } else if (type.equals(Constant.SEARCH_TYPES[2])) {
+            searchTable(slangManager.searchByAll(keyword));
+          }
         }
       }
     );
+
+    SearchTypeBox.addActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent event) {
+          String keyword = SearchField.getText();
+          String type = SearchTypeBox.getSelectedItem().toString();
+          if (type.equals(Constant.SEARCH_TYPES[0])) {
+            searchTable(slangManager.searchBySlang(keyword));
+          } else if (type.equals(Constant.SEARCH_TYPES[1])) {
+            searchTable(slangManager.searchByDefinition(keyword));
+          } else if (type.equals(Constant.SEARCH_TYPES[2])) {
+            searchTable(slangManager.searchByAll(keyword));
+          }
+        }
+      }
+    );
+
+    SearchField
+      .getDocument()
+      .addDocumentListener(
+        new DocumentListener() {
+          public void changedUpdate(DocumentEvent e) {
+            SearchButton.doClick();
+          }
+
+          public void removeUpdate(DocumentEvent e) {
+            SearchButton.doClick();
+          }
+
+          public void insertUpdate(DocumentEvent e) {
+            SearchButton.doClick();
+          }
+        }
+      );
   }
 
   private void prepareSearchUI() {

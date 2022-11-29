@@ -7,7 +7,7 @@ public final class Constant {
   public static final String APP_NAME = "Slang Dictionary";
   public static final int APP_WIDTH = 1000;
   public static final int APP_HEIGHT = 1000;
-  public static final String[] SEARCH_TYPES = { "Definition", "Slang", "All" };
+  public static final String[] SEARCH_TYPES = { "Slang", "Definition", "All" };
 
   public static enum SlangType {
     SLANG,
@@ -20,6 +20,7 @@ public final class Constant {
 
   public static String SLANG_HISTORY_PATH = "log/history/slang.txt";
   public static String KEYWORD_HISTORY_PATH = "log/history/keyword.txt";
+  public static String MEANING_HISTORY_PATH = "log/history/meaning.txt";
 
   public static String TIME_LOG_FORMAT = "yyyy/MM/dd HH:mm:ss";
 
@@ -28,6 +29,5 @@ public final class Constant {
   public static String DB_SEPARATOR_SLANG_DEFINITION = "`";
   public static String LOG_SEPARATOR_DEFINITION_DEFINITION = "\\| ";
 
-
-  public static String TABLE_COLUMNS_NAME[] = {"NO.", "Slang", "Definition"};
+  public static String TABLE_COLUMNS_NAME[] = { "NO.", "Slang", "Definition" };
 }
