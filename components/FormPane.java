@@ -136,6 +136,7 @@ public class FormPane extends JPanel {
           } else if (type.equals(Constant.SEARCH_TYPES[2])) {
             searchTable(slangManager.searchByAll(keyword));
           }
+          historySearchTable();
           slangManager.logHistory(Constant.SlangType.KEYWORD, keyword);
         }
       }
