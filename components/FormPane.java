@@ -19,6 +19,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import utils.Constant;
 
 public class FormPane extends JPanel {
@@ -159,6 +161,28 @@ public class FormPane extends JPanel {
         }
       );
 
+    // Table on select row
+    TableResult
+      .getSelectionModel()
+      .addListSelectionListener(
+        new ListSelectionListener() {
+          public void valueChanged(ListSelectionEvent event) {
+            if (TableResult.getSelectedRow() > -1) {
+              ControlSlangField.setText(
+                TableResult
+                  .getValueAt(TableResult.getSelectedRow(), 1)
+                  .toString()
+              );
+              ControlDefinitionField.setText(
+                TableResult
+                  .getValueAt(TableResult.getSelectedRow(), 2)
+                  .toString()
+              );
+            }
+          }
+        }
+      );
+
     AddButton.addActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent event) {
@@ -191,6 +215,20 @@ public class FormPane extends JPanel {
             slangManager.addSlang(slang, definitions, true);
             searchTable(slangManager.getAllSlang());
           }
+        }
+      }
+    );
+
+    EditButton.addActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent event) {
+          String slang = ControlSlangField.getText();
+          String definition = ControlDefinitionField.getText();
+          ArrayList<String> definitions = new ArrayList<String>();
+          definitions.add(definition);
+          
+          slangManager.editSlang(slang, definitions);
+          searchTable(slangManager.getAllSlang());
         }
       }
     );

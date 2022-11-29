@@ -83,21 +83,20 @@ public class SlangManager {
     for (String log : historyLog) {
       ArrayList<String> history = new ArrayList<String>();
       String slangHistory = log.split(Constant.LOG_SEPARATOR_TIME_CONTENT)[1];
-      String slang = slangHistory.split(
+      String[] slangHistoryArray = slangHistory.split(
         Constant.LOG_SEPARATOR_SLANG_DEFINITION
-      )[0];
-      String meanings = slangHistory.split(
-        Constant.LOG_SEPARATOR_SLANG_DEFINITION
-      )[1];
-
-      String[] meaningArray = meanings.split(
-        Constant.LOG_SEPARATOR_DEFINITION_DEFINITION
       );
-      for (String meaning : meaningArray) {
-        history.add(meaning);
+      if (slangHistoryArray.length == 2) {
+        String slang = slangHistoryArray[0];
+        String[] slangMeaningArray =
+          slangHistoryArray[1].split(
+              Constant.LOG_SEPARATOR_DEFINITION_DEFINITION
+            );
+        for (int j = 0; j < slangMeaningArray.length; j++) {
+          history.add(slangMeaningArray[j]);
+        }
+        historyMap.put(slang, history);
       }
-
-      historyMap.put(slang, history);
     }
   }
 
@@ -428,6 +427,22 @@ public class SlangManager {
       datasourceManager.updateSlang(
         Constant.USER_SLANG_DATASOURCE,
         oldSlangName,
+        newSlang
+      );
+    } catch (Exception e) {
+      return false;
+    }
+    return true;
+  }
+
+  public boolean editSlang(String slangName, ArrayList<String> newMeaning) {
+    // change the slang meaning
+    try {
+      slangMap.put(slangName, newMeaning);
+      Slang newSlang = new Slang(slangName, newMeaning);
+      datasourceManager.updateSlang(
+        Constant.USER_SLANG_DATASOURCE,
+        slangName,
         newSlang
       );
     } catch (Exception e) {
