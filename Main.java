@@ -1,8 +1,6 @@
 import components.FormPane;
 import controllers.SlangManager;
-import controllers.SlangManager.Slang;
 import java.awt.*;
-import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -13,25 +11,9 @@ public class Main {
   static SlangManager slangManager = new SlangManager();
 
   public static void main(String[] args) {
-    // new Main();
     slangManager.loadSlangs();
-
-    // slangManager.searchByKeyword("God");
-
-    // slangManager.searchBySlang("WHEW");
-    // slangManager.searchBySlang("ABU");
-
-    // ArrayList<String> meaning = new ArrayList<String>();
-    // meaning.add("Alpha Beta Unlimited");
-
-    // slangManager.removeSlang("ABU");
-
-    // slangManager.resetSlang();
-
-    // slangManager.quizSlangGame();
-    // slangManager.quizDefinitionGame();
-
-    slangManager.editSlang("ABU", "ABUUUU");
+    new Main();
+    
   }
 
   public Main() {

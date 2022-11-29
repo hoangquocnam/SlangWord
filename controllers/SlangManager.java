@@ -1,5 +1,4 @@
 package controllers;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -50,6 +49,10 @@ public class SlangManager {
       Constant.DATASOURCE,
       Constant.USER_SLANG_DATASOURCE
     );
+  }
+
+  public TreeMap<String, ArrayList<String>> getAllSlang() {
+    return slangMap;
   }
 
   public void setSlangList(ArrayList<String> slangList) {
@@ -149,30 +152,29 @@ public class SlangManager {
     }
   }
 
-  public ArrayList<String> searchBySlang(String keyword) {
-    ArrayList<String> result = new ArrayList<String>();
+  public TreeMap<String, ArrayList<String>> searchBySlang(String keyword) {
+    TreeMap<String, ArrayList<String>> result = new TreeMap<String, ArrayList<String>>();
     for (String slang : slangMap.keySet()) {
       if (slang.contains(keyword)) {
-        result.add(slang);
+        result.put(slang, slangMap.get(slang));
       }
     }
     logHistory(Constant.SlangType.SLANG, keyword);
     return result;
   }
 
-  public ArrayList<String> searchByKeyword(String keyword) {
+  public TreeMap<String, ArrayList<String>> searchByKeyword(String keyword) {
     try {
-      ArrayList<String> slangList = new ArrayList<String>();
+      TreeMap<String, ArrayList<String>> result = new TreeMap<String, ArrayList<String>>();
       for (String slang : slangMap.keySet()) {
-        ArrayList<String> meaningOfSlang = getMeaning(slang);
-        for (String meaning : meaningOfSlang) {
+        for (String meaning : slangMap.get(slang)) {
           if (meaning.contains(keyword)) {
-            slangList.add(slang);
+            result.put(slang, slangMap.get(slang));
           }
         }
       }
       logHistory(Constant.SlangType.KEYWORD, keyword);
-      return slangList;
+      return result;
     } catch (Exception e) {
       return null;
     }

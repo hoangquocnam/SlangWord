@@ -1,7 +1,11 @@
 package components;
 
-import java.awt.*;
+import controllers.SlangManager;
+import utils.Constant;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,18 +18,30 @@ import javax.swing.border.TitledBorder;
 
 public class SearchPane extends JPanel {
 
+  static SlangManager slangManager = new SlangManager();
+
   JComboBox<String> SearchTypeBox;
   JButton SearchButton;
   JTextField SearchField;
-  static String[] SEARCH_TYPES = { "Definition", "Slang", "All" };
+
 
   public void prepareUI() {
-    SearchTypeBox = new JComboBox<String>(SEARCH_TYPES);
+    SearchTypeBox = new JComboBox<String>(Constant.SEARCH_TYPES);
     SearchButton = new JButton("Search");
     SearchField = new JTextField(20);
 
     SearchButton.setSize(100, 20);
     SearchField.addActionListener(e -> SearchButton.doClick());
+
+    SearchButton.addActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent event) {
+          String keyword = SearchField.getText();
+          slangManager.searchByKeyword(keyword);
+          
+        }
+      }
+    );
   }
 
   public SearchPane() {
@@ -45,8 +61,6 @@ public class SearchPane extends JPanel {
     searchTypePane.add(new JLabel("By:"));
     searchTypePane.add(SearchTypeBox);
 
-
-  
     panel.add(keywordPane, BorderLayout.PAGE_START);
     panel.add(searchTypePane, BorderLayout.CENTER);
     panel.add(SearchButton, BorderLayout.CENTER);

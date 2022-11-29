@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class FormPane extends JPanel {
+  
 
   public FormPane() {
     setBorder(new EmptyBorder(8, 8, 8, 8));
