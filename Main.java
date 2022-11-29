@@ -31,9 +31,10 @@ public class Main {
 
     // slangManager.resetSlang();
 
-    Slang slang = slangManager.getRandomSlang();
+    slangManager.quizSlangGame();
+    slangManager.quizDefinitionGame();
 
-    System.out.println(slang.getSlang() + " " + slang.getMeaning());
+    
 
   }
 
