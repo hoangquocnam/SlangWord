@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -33,6 +34,14 @@ public class FormPane extends JPanel {
 
   JPanel HistoryPane;
   JTable HistoryTable;
+
+  JPanel ControlPane;
+  JButton AddButton;
+  JButton EditButton;
+  JButton DeleteButton;
+
+  JTextField ControlSlangField;
+  JTextField ControlDefinitionField;
 
   // RIGHT
   JPanel ResultPane;
@@ -99,7 +108,7 @@ public class FormPane extends JPanel {
     return dataArr;
   }
 
-  private void handleEvent() {
+  private void addEvents() {
     SearchButton.addActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent event) {
@@ -149,6 +158,42 @@ public class FormPane extends JPanel {
           }
         }
       );
+
+    AddButton.addActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent event) {
+          String slang = ControlSlangField.getText();
+          boolean isExist = slangManager.isExistSlang(slang);
+          if (isExist) {
+            int result = JOptionPane.showConfirmDialog(
+              null,
+              "Do you want to override it?",
+              "This slang is already exist",
+              JOptionPane.YES_NO_OPTION
+            );
+            if (result == JOptionPane.YES_OPTION) {
+              String definition = ControlDefinitionField.getText();
+              ArrayList<String> definitions = new ArrayList<String>();
+              definitions.add(definition);
+              slangManager.addSlang(slang, definitions, true);
+              searchTable(slangManager.getAllSlang());
+            } else if (result == JOptionPane.NO_OPTION) {
+              String definition = ControlDefinitionField.getText();
+              ArrayList<String> definitions = new ArrayList<String>();
+              definitions.add(definition);
+              slangManager.addSlang(slang, definitions, false);
+              searchTable(slangManager.getAllSlang());
+            }
+          } else {
+            String definition = ControlDefinitionField.getText();
+            ArrayList<String> definitions = new ArrayList<String>();
+            definitions.add(definition);
+            slangManager.addSlang(slang, definitions, true);
+            searchTable(slangManager.getAllSlang());
+          }
+        }
+      }
+    );
   }
 
   private void prepareSearchUI() {
@@ -212,24 +257,60 @@ public class FormPane extends JPanel {
     );
   }
 
+  private void prepareControlUI() {
+    ControlPane = new JPanel();
+    ControlPane.setSize(100, 50);
+    ControlPane.setLayout(new GridLayout(2, 1));
+
+    JPanel FieldContainer = new JPanel(new GridLayout(2, 1));
+
+    JPanel SlangContainer = new JPanel(new FlowLayout());
+    SlangContainer.add(new JLabel("Slang:"));
+    ControlSlangField = new JTextField(20);
+    SlangContainer.add(ControlSlangField);
+
+    JPanel DefinitionContainer = new JPanel(new FlowLayout());
+    DefinitionContainer.add(new JLabel("Definition:"));
+    ControlDefinitionField = new JTextField(20);
+    DefinitionContainer.add(ControlDefinitionField);
+
+    FieldContainer.add(SlangContainer);
+    FieldContainer.add(DefinitionContainer);
+
+    JPanel ButtonContainer = new JPanel(new FlowLayout());
+    AddButton = new JButton("Add");
+    ButtonContainer.add(AddButton);
+
+    EditButton = new JButton("Edit");
+    ButtonContainer.add(EditButton);
+
+    DeleteButton = new JButton("Delete");
+    ButtonContainer.add(DeleteButton);
+
+    ControlPane.add(FieldContainer);
+    ControlPane.add(ButtonContainer);
+  }
+
   private void prepareLeftPanel() {
-    LeftPanel = new JPanel(new GridLayout(3, 1));
+    LeftPanel = new JPanel(new BorderLayout());
     prepareSearchUI();
     prepareHistoryUI();
-    LeftPanel.add(SearchPanel);
-    LeftPanel.add(HistoryPane);
+    prepareControlUI();
+    LeftPanel.add(SearchPanel, BorderLayout.NORTH);
+    LeftPanel.add(ControlPane, BorderLayout.EAST);
+    LeftPanel.add(HistoryPane, BorderLayout.WEST);
   }
 
   public FormPane() {
     setBorder(new EmptyBorder(8, 8, 8, 8));
-    setLayout(new FlowLayout());
+    setLayout(new BorderLayout());
 
     prepareLeftPanel();
-    add(LeftPanel);
+    add(LeftPanel, BorderLayout.WEST);
 
     prepareResultUI();
-    add(ResultPane);
+    add(ResultPane, BorderLayout.EAST);
 
-    handleEvent();
+    addEvents();
   }
 }

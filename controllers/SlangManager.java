@@ -264,20 +264,17 @@ public class SlangManager {
     }
   }
 
-  public boolean addSlang(String slang, ArrayList<String> meaning) {
+  public boolean addSlang(
+    String slang,
+    ArrayList<String> meaning,
+    boolean isYes
+  ) {
     try {
       if (slangMap.containsKey(slang)) {
         ArrayList<String> oldMeaning = slangMap.get(slang);
         String meaningText = "";
 
-        System.out.println("Slang word: " + slang + " already exists");
-        System.out.println("Do you want to update the meaning? (Y/N)");
-        //TODO: handle with UI later - get text from UI
-        String answer = System.console().readLine();
-
-        if (
-          answer.toLowerCase().equals("y") || answer.toLowerCase().equals("yes")
-        ) {
+        if (isYes) {
           for (String m : meaning) {
             if (m != meaning.get(meaning.size() - 1)) {
               meaningText += m + "| ";
@@ -437,5 +434,9 @@ public class SlangManager {
       return false;
     }
     return true;
+  }
+
+  public boolean isExistSlang(String slang) {
+    return slangMap.containsKey(slang);
   }
 }
