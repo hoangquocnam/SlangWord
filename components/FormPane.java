@@ -9,7 +9,6 @@ import java.util.TreeMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -25,46 +24,79 @@ public class FormPane extends JPanel {
 
   static SlangManager slangManager = new SlangManager();
 
+  // LEFT
+  JPanel LeftPanel;
+  JPanel SearchPanel;
   JComboBox<String> SearchTypeBox;
   JButton SearchButton;
   JTextField SearchField;
-  JPanel SearchPanel;
 
-  JTable table;
-  JPanel resultPane;
+  JPanel HistoryPane;
+  JTable HistoryTable;
 
-  private static String[][] getDataToTable() {
-    TreeMap<String, ArrayList<String>> data = slangManager.getAllSlang();
+  // RIGHT
+  JPanel ResultPane;
+  JTable TableResult;
+
+  private static String[][] getDataToTable(
+    TreeMap<String, ArrayList<String>> data
+  ) {
     String[][] dataArr = new String[slangManager.getAllSlang().size()][3];
 
     int i = 0;
     for (String key : data.keySet()) {
       dataArr[i][0] = String.valueOf(i + 1);
       dataArr[i][1] = key;
-      dataArr[i][2] = String.join(", ", data.get(key));
+      dataArr[i][2] =
+        String.join(Constant.TABLE_DEFINITION_SEPARATOR, data.get(key));
       i++;
     }
 
     return dataArr;
   }
 
-  public void searchTable(TreeMap<String, ArrayList<String>> data) {
+  public String[][] searchTable(TreeMap<String, ArrayList<String>> data) {
     String[][] dataArr = new String[data.size()][3];
 
     int i = 0;
     for (String key : data.keySet()) {
       dataArr[i][0] = String.valueOf(i + 1);
       dataArr[i][1] = key;
-      dataArr[i][2] = String.join(", ", data.get(key));
+      dataArr[i][2] =
+        String.join(Constant.TABLE_DEFINITION_SEPARATOR, data.get(key));
       i++;
     }
 
-    table.setModel(
+    TableResult.setModel(
       new javax.swing.table.DefaultTableModel(
         dataArr,
         Constant.TABLE_COLUMNS_NAME
       )
     );
+    return dataArr;
+  }
+
+  public String[][] historySearchTable() {
+    slangManager.loadHistory();
+    TreeMap<String, ArrayList<String>> data = slangManager.getHistorySlang();
+    String[][] dataArr = new String[data.size()][3];
+
+    int i = 0;
+    for (String key : data.keySet()) {
+      dataArr[i][0] = String.valueOf(i + 1);
+      dataArr[i][1] = key;
+      dataArr[i][2] =
+        String.join(Constant.TABLE_DEFINITION_SEPARATOR, data.get(key));
+      i++;
+    }
+
+    HistoryTable.setModel(
+      new javax.swing.table.DefaultTableModel(
+        dataArr,
+        Constant.TABLE_COLUMNS_NAME
+      )
+    );
+    return dataArr;
   }
 
   private void handleEvent() {
@@ -74,11 +106,11 @@ public class FormPane extends JPanel {
           String keyword = SearchField.getText();
           String type = SearchTypeBox.getSelectedItem().toString();
           if (type.equals(Constant.SEARCH_TYPES[0])) {
-            searchTable(slangManager.searchBySlang(keyword));
+            searchTable(slangManager.searchBySlang(keyword, true));
           } else if (type.equals(Constant.SEARCH_TYPES[1])) {
-            searchTable(slangManager.searchByDefinition(keyword));
+            searchTable(slangManager.searchByDefinition(keyword, true));
           } else if (type.equals(Constant.SEARCH_TYPES[2])) {
-            searchTable(slangManager.searchByAll(keyword));
+            searchTable(slangManager.searchByAll(keyword, true));
           }
         }
       }
@@ -90,11 +122,11 @@ public class FormPane extends JPanel {
           String keyword = SearchField.getText();
           String type = SearchTypeBox.getSelectedItem().toString();
           if (type.equals(Constant.SEARCH_TYPES[0])) {
-            searchTable(slangManager.searchBySlang(keyword));
+            searchTable(slangManager.searchBySlang(keyword, false));
           } else if (type.equals(Constant.SEARCH_TYPES[1])) {
-            searchTable(slangManager.searchByDefinition(keyword));
+            searchTable(slangManager.searchByDefinition(keyword, false));
           } else if (type.equals(Constant.SEARCH_TYPES[2])) {
-            searchTable(slangManager.searchByAll(keyword));
+            searchTable(slangManager.searchByAll(keyword, false));
           }
         }
       }
@@ -123,11 +155,8 @@ public class FormPane extends JPanel {
     SearchTypeBox = new JComboBox<String>(Constant.SEARCH_TYPES);
 
     SearchButton = new JButton("Search");
-    SearchButton.setSize(100, 20);
 
     SearchField = new JTextField(20);
-    SearchField.addActionListener(e -> SearchButton.doClick());
-
     SearchPanel = new JPanel(new FlowLayout());
     SearchPanel.add(new JLabel("Search for:"), BorderLayout.LINE_START);
     SearchPanel.add(SearchField, BorderLayout.LINE_END);
@@ -144,36 +173,62 @@ public class FormPane extends JPanel {
         new EmptyBorder(4, 4, 4, 4)
       )
     );
-
-    add(SearchPanel);
   }
 
   private void prepareResultUI() {
-    table = new JTable(getDataToTable(), Constant.TABLE_COLUMNS_NAME);
-    resultPane = new JPanel(new BorderLayout());
-    resultPane.add(new JScrollPane(table), BorderLayout.CENTER);
-    resultPane.setBorder(
+    TreeMap<String, ArrayList<String>> data = slangManager.getAllSlang();
+    TableResult = new JTable(getDataToTable(data), Constant.TABLE_COLUMNS_NAME);
+    ResultPane = new JPanel(new BorderLayout());
+    JScrollPane scrollPane = new JScrollPane(
+      TableResult,
+      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+      JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED
+    );
+    ResultPane.add(scrollPane, BorderLayout.CENTER);
+    ResultPane.setBorder(
       new CompoundBorder(
         new TitledBorder("RESULT"),
         new EmptyBorder(4, 4, 4, 4)
       )
     );
+  }
 
-    add(resultPane);
+  private void prepareHistoryUI() {
+    TreeMap<String, ArrayList<String>> dataHistory = slangManager.getHistorySlang();
+    HistoryTable =
+      new JTable(getDataToTable(dataHistory), Constant.TABLE_COLUMNS_NAME);
+    HistoryPane = new JPanel(new BorderLayout());
+    JScrollPane scrollPane = new JScrollPane(
+      HistoryTable,
+      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+      JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED
+    );
+    HistoryPane.add(scrollPane, BorderLayout.CENTER);
+    HistoryPane.setBorder(
+      new CompoundBorder(
+        new TitledBorder("HISTORY"),
+        new EmptyBorder(4, 4, 4, 4)
+      )
+    );
+  }
+
+  private void prepareLeftPanel() {
+    LeftPanel = new JPanel(new GridLayout(3, 1));
+    prepareSearchUI();
+    prepareHistoryUI();
+    LeftPanel.add(SearchPanel);
+    LeftPanel.add(HistoryPane);
   }
 
   public FormPane() {
     setBorder(new EmptyBorder(8, 8, 8, 8));
-    setLayout(new GridBagLayout());
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    gbc.fill = GridBagConstraints.BOTH;
-    gbc.weightx = 1;
-    prepareSearchUI();
+    setLayout(new FlowLayout());
 
-    gbc.gridy++;
+    prepareLeftPanel();
+    add(LeftPanel);
+
     prepareResultUI();
+    add(ResultPane);
 
     handleEvent();
   }

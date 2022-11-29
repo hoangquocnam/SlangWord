@@ -56,6 +56,10 @@ public class SlangManager {
     return slangMap;
   }
 
+  public TreeMap<String, ArrayList<String>> getHistorySlang() {
+    return historyMap;
+  }
+
   public void setSlangList(ArrayList<String> slangList) {
     for (int i = 0; i < slangList.size(); i++) {
       String[] slang = slangList.get(i).split("`");
@@ -164,18 +168,26 @@ public class SlangManager {
     }
   }
 
-  public TreeMap<String, ArrayList<String>> searchBySlang(String keyword) {
+  public TreeMap<String, ArrayList<String>> searchBySlang(
+    String keyword,
+    boolean isPressSearch
+  ) {
     TreeMap<String, ArrayList<String>> result = new TreeMap<String, ArrayList<String>>();
     for (String slang : slangMap.keySet()) {
       if (slang.contains(keyword)) {
         result.put(slang, slangMap.get(slang));
       }
     }
-    logHistory(Constant.SlangType.SLANG, keyword);
+    if (isPressSearch) {
+      logHistory(Constant.SlangType.SLANG, keyword);
+    }
     return result;
   }
 
-  public TreeMap<String, ArrayList<String>> searchByDefinition(String keyword) {
+  public TreeMap<String, ArrayList<String>> searchByDefinition(
+    String keyword,
+    boolean isPressSearch
+  ) {
     try {
       TreeMap<String, ArrayList<String>> result = new TreeMap<String, ArrayList<String>>();
       for (String slang : slangMap.keySet()) {
@@ -185,14 +197,19 @@ public class SlangManager {
           }
         }
       }
-      logHistory(Constant.SlangType.MEANING, keyword);
+      if (isPressSearch) {
+        logHistory(Constant.SlangType.MEANING, keyword);
+      }
       return result;
     } catch (Exception e) {
       return null;
     }
   }
 
-  public TreeMap<String, ArrayList<String>> searchByAll(String keyword) {
+  public TreeMap<String, ArrayList<String>> searchByAll(
+    String keyword,
+    boolean isPressSearch
+  ) {
     TreeMap<String, ArrayList<String>> result = new TreeMap<String, ArrayList<String>>();
     for (String slang : slangMap.keySet()) {
       if (slang.contains(keyword)) {
@@ -204,7 +221,9 @@ public class SlangManager {
         }
       }
     }
-    logHistory(Constant.SlangType.KEYWORD, keyword);
+    if (isPressSearch) {
+      logHistory(Constant.SlangType.KEYWORD, keyword);
+    }
     return result;
   }
 

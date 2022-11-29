@@ -12,6 +12,7 @@ public class Main {
 
   public static void main(String[] args) {
     slangManager.loadSlangs();
+    slangManager.loadHistory();
     new Main();
     
   }

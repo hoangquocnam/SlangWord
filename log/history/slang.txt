@@ -1,24 +1,11 @@
-[2022/11/29 00:59:48] ----- WHEW:relief| amazement
-[2022/11/29 00:59:48] ----- ABU:Anyone but Manchester United
-[2022/11/29 12:51:42] ----- BTW:By The Way
-[2022/11/29 13:08:25] ----- ABU:Anyone but Manchester United
-[2022/11/29 13:15:39] ----- ABU:Anyone but Manchester United
-[2022/11/29 13:17:19] ----- ABU:Anyone but Manchester United
-[2022/11/29 13:22:43] ----- ABU:Anyone but Manchester United
-[2022/11/29 13:22:46] ----- ABU:Anyone but Manchester United
-[2022/11/29 13:22:48] ----- U:You
-[2022/11/29 13:22:48] ----- UN:United Nations
-[2022/11/29 13:22:48] ----- UN:United Nations
-[2022/11/29 13:22:48] ----- U:You
-[2022/11/29 13:22:49] ----- U:You
-[2022/11/29 13:22:49] ----- UN:United Nations
-[2022/11/29 13:22:49] ----- UNI:University
-[2022/11/29 13:22:50] ----- UNI:University
-[2022/11/29 13:22:50] ----- UN:United Nations
-[2022/11/29 13:22:52] ----- UN:United Nations
-[2022/11/29 13:22:52] ----- U:You
-[2022/11/29 13:22:53] ----- B:Be
-[2022/11/29 13:22:53] ----- BU:Backup
-[2022/11/29 13:22:53] ----- BUN:Smoke marijuana\| Ugly
-[2022/11/29 13:22:53] ----- BU:Backup
-[2022/11/29 13:22:54] ----- B:Be
+[2022/11/29 14:13:43] ----- N:And
+[2022/11/29 14:21:38] ----- ABU:Anyone but Manchester United
+[2022/11/29 14:21:41] ----- ABU:Anyone but Manchester United
+[2022/11/29 14:24:10] ----- G:Grin
+[2022/11/29 14:24:18] ----- G:Grin
+[2022/11/29 14:24:23] ----- U:You
+[2022/11/29 14:24:26] ----- U:You
+[2022/11/29 14:24:28] ----- U:You
+[2022/11/29 14:24:33] ----- N:And
+[2022/11/29 14:24:33] ----- NA:Not Available\| Not Applicable\| Not Announced
+[2022/11/29 14:24:36] ----- N:And
