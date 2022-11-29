@@ -15,6 +15,11 @@ public final class Constant {
     KEYWORD,
   }
 
+  public static enum QuizGameType {
+    SLANG,
+    MEANING,
+  }
+
   public static String DATASOURCE = "assets/slang.txt";
   public static String USER_SLANG_DATASOURCE = "assets/userSlang.txt";
 
@@ -27,7 +32,7 @@ public final class Constant {
   public static String LOG_SEPARATOR_TIME_CONTENT = " ----- ";
   public static String LOG_SEPARATOR_SLANG_DEFINITION = ":";
   public static String LOG_SEPARATOR_DEFINITION_DEFINITION = "\\| ";
-  
+
   public static String DB_SEPARATOR_SLANG_DEFINITION = "`";
 
   public static String TABLE_DEFINITION_SEPARATOR = ", ";

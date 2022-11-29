@@ -37,6 +37,47 @@ public class SlangManager {
     }
   }
 
+  public class Quiz {
+
+    private String question;
+    private int answer;
+    private ArrayList<String> options;
+
+    public Quiz(String question, int answer, ArrayList<String> options) {
+      this.question = question;
+      this.answer = answer;
+      this.options = options;
+    }
+
+    public String getQuestion() {
+      return question;
+    }
+
+    public void setQuestion(String question) {
+      this.question = question;
+    }
+
+    public int getAnswer() {
+      return answer;
+    }
+
+    public void setAnswer(int answer) {
+      this.answer = answer;
+    }
+
+    public ArrayList<String> getOptions() {
+      return options;
+    }
+
+    public void setOptions(ArrayList<String> options) {
+      this.options = options;
+    }
+
+    public String getOption(int index) {
+      return options.get(index);
+    }
+  }
+
   static TreeMap<String, ArrayList<String>> slangMap = new TreeMap<String, ArrayList<String>>();
   static TreeMap<String, ArrayList<String>> historyMap = new TreeMap<String, ArrayList<String>>();
   static DatasourceManager datasourceManager = new DatasourceManager();
@@ -352,63 +393,43 @@ public class SlangManager {
     return null;
   }
 
-  public void quizSlangGame() {
+  public Quiz quizSlangGame() {
     Slang quizSlang = getRandomSlang();
-    System.out.println("What is the meaning of " + quizSlang.getSlang() + "?");
-    // generate 4 random definition
-    ArrayList<String> randomDefinition = new ArrayList<String>();
-    randomDefinition.add(quizSlang.getMeaning().get(0));
-    while (randomDefinition.size() < 4) {
+    ArrayList<String> options = new ArrayList<String>();
+    options.add(quizSlang.getMeaning().get(0));
+    for (int i = 0; i < 3; i++) {
       Slang randomSlang = getRandomSlang();
-      if (!randomDefinition.contains(randomSlang.getMeaning().get(0))) {
-        randomDefinition.add(randomSlang.getMeaning().get(0));
+      if (!randomSlang.getSlang().equals(quizSlang.getSlang())) {
+        options.add(randomSlang.getMeaning().get(0));
+      } else {
+        i--;
       }
     }
-    Collections.shuffle(randomDefinition);
-    for (int i = 0; i < randomDefinition.size(); i++) {
-      System.out.println((i + 1) + ". " + randomDefinition.get(i));
-    }
-    System.out.println("Your answer: ");
-    String answer = System.console().readLine();
-    if (
-      randomDefinition
-        .get(Integer.parseInt(answer) - 1)
-        .equals(quizSlang.getMeaning().get(0))
-    ) {
-      System.out.println("Correct!");
-    } else {
-      System.out.println("Wrong!");
-    }
+
+    Collections.shuffle(options);
+    int correctAnswer = options.indexOf(quizSlang.getMeaning().get(0));
+    Quiz quiz = new Quiz(quizSlang.getSlang(), correctAnswer, options);
+    return quiz;
   }
 
-  public void quizDefinitionGame() {
+  public Quiz quizDefinitionGame() {
     Slang quizSlang = getRandomSlang();
-    System.out.println(
-      "What is the slang word of " + quizSlang.getMeaning().get(0) + "?"
-    );
-    ArrayList<String> randomSlang = new ArrayList<String>();
-    randomSlang.add(quizSlang.getSlang());
-    while (randomSlang.size() < 4) {
-      Slang randomSlangObj = getRandomSlang();
-      if (!randomSlang.contains(randomSlangObj.getSlang())) {
-        randomSlang.add(randomSlangObj.getSlang());
+    ArrayList<String> options = new ArrayList<String>();
+    options.add(quizSlang.getSlang());
+    for (int i = 0; i < 3; i++) {
+      Slang randomSlang = getRandomSlang();
+      if (!randomSlang.getSlang().equals(quizSlang.getSlang())) {
+        options.add(randomSlang.getSlang());
+      } else {
+        i--;
       }
     }
 
-    Collections.shuffle(randomSlang);
-    for (int i = 0; i < randomSlang.size(); i++) {
-      System.out.println((i + 1) + ". " + randomSlang.get(i));
-    }
+    Collections.shuffle(options);
+    int correctAnswer = options.indexOf(quizSlang.getSlang());
+    Quiz quiz = new Quiz(quizSlang.getMeaning().get(0), correctAnswer, options);
 
-    System.out.println("Your answer: ");
-    String answer = System.console().readLine();
-    if (
-      randomSlang.get(Integer.parseInt(answer) - 1).equals(quizSlang.getSlang())
-    ) {
-      System.out.println("Correct!");
-    } else {
-      System.out.println("Wrong!");
-    }
+    return quiz;
   }
 
   public boolean editSlang(String oldSlangName, String newSlangName) {

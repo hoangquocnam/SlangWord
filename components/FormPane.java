@@ -1,11 +1,13 @@
 package components;
 
 import controllers.SlangManager;
+import controllers.SlangManager.Slang;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.TreeMap;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -50,6 +52,14 @@ public class FormPane extends JPanel {
   // RIGHT
   JPanel ResultPane;
   JTable TableResult;
+
+  // TOP
+  JPanel TopPane;
+  JLabel TopSlangLabel;
+  JButton TopRandomSlangButton;
+
+  //QUIZ
+  JPanel QuizSlangPane;
 
   private static String[][] getDataToTable(
     TreeMap<String, ArrayList<String>> data
@@ -277,6 +287,17 @@ public class FormPane extends JPanel {
         }
       }
     );
+
+    TopRandomSlangButton.addActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent event) {
+          Slang randomSlang = slangManager.getRandomSlang();
+          TopSlangLabel.setText(
+            randomSlang.getSlang() + " ---- " + randomSlang.getMeaning().get(0)
+          );
+        }
+      }
+    );
   }
 
   private void prepareSearchUI() {
@@ -376,9 +397,16 @@ public class FormPane extends JPanel {
     ControlPane.add(FieldContainer);
     ControlPane.add(ButtonContainer);
     ControlPane.add(ResetButton);
+
+    ControlPane.setBorder(
+      new CompoundBorder(
+        new TitledBorder("CONTROL BUTTONS"),
+        new EmptyBorder(4, 4, 4, 4)
+      )
+    );
   }
 
-  private void prepareLeftPanel() {
+  private void prepareLeftPaneUI() {
     LeftPanel = new JPanel(new BorderLayout());
     prepareSearchUI();
     prepareHistoryUI();
@@ -388,15 +416,58 @@ public class FormPane extends JPanel {
     LeftPanel.add(HistoryPane, BorderLayout.WEST);
   }
 
+  private void prepareTopPaneUI() {
+    TopPane = new JPanel(new BorderLayout());
+    Slang todaySlang = slangManager.getRandomSlang();
+    TopSlangLabel =
+      new JLabel(
+        todaySlang.getSlang() + " ---- " + todaySlang.getMeaning().get(0)
+      );
+
+    TopSlangLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+
+    TopRandomSlangButton = new JButton("Random Slang");
+
+    TopPane.add(TopSlangLabel, BorderLayout.WEST);
+    TopPane.add(TopRandomSlangButton, BorderLayout.EAST);
+    TopPane.setBorder(
+      new CompoundBorder(
+        new TitledBorder("On this day slang word"),
+        new EmptyBorder(4, 4, 4, 4)
+      )
+    );
+  }
+
+  private void prepareQuizPaneUI() {
+    QuizSlangPane = new JPanel(new FlowLayout());
+    QuizPane SlangQuiz = new QuizPane(Constant.QuizGameType.SLANG);
+    QuizSlangPane.add(SlangQuiz);
+
+    QuizSlangPane.add(Box.createRigidArea(new Dimension(20, 0)));
+
+    QuizPane DefinitionQuiz = new QuizPane(Constant.QuizGameType.MEANING);
+    QuizSlangPane.add(DefinitionQuiz);
+
+    QuizSlangPane.setBorder(
+      new CompoundBorder(new TitledBorder("QUIZ"), new EmptyBorder(4, 4, 4, 4))
+    );
+  }
+
   public FormPane() {
     setBorder(new EmptyBorder(8, 8, 8, 8));
     setLayout(new BorderLayout());
 
-    prepareLeftPanel();
+    prepareTopPaneUI();
+    add(TopPane, BorderLayout.NORTH);
+
+    prepareLeftPaneUI();
     add(LeftPanel, BorderLayout.WEST);
 
     prepareResultUI();
     add(ResultPane, BorderLayout.EAST);
+
+    prepareQuizPaneUI();
+    add(QuizSlangPane, BorderLayout.SOUTH);
 
     addEvents();
   }
