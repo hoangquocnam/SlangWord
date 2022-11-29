@@ -42,6 +42,8 @@ public class FormPane extends JPanel {
   JButton EditButton;
   JButton DeleteButton;
 
+  JButton ResetButton;
+
   JTextField ControlSlangField;
   JTextField ControlDefinitionField;
 
@@ -256,6 +258,25 @@ public class FormPane extends JPanel {
         }
       }
     );
+
+    ResetButton.addActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent event) {
+          int result = JOptionPane.showConfirmDialog(
+            null,
+            "Do you want to reset dictionary?",
+            "Reset slang dictionary",
+            JOptionPane.YES_NO_OPTION
+          );
+          if (result == JOptionPane.YES_OPTION) {
+            slangManager.resetSlang();
+            searchTable(slangManager.getAllSlang());
+            ControlSlangField.setText("");
+            ControlDefinitionField.setText("");
+          }
+        }
+      }
+    );
   }
 
   private void prepareSearchUI() {
@@ -322,7 +343,7 @@ public class FormPane extends JPanel {
   private void prepareControlUI() {
     ControlPane = new JPanel();
     ControlPane.setSize(100, 50);
-    ControlPane.setLayout(new GridLayout(2, 1));
+    ControlPane.setLayout(new GridLayout(3, 1));
 
     JPanel FieldContainer = new JPanel(new GridLayout(2, 1));
 
@@ -349,8 +370,12 @@ public class FormPane extends JPanel {
     DeleteButton = new JButton("Delete");
     ButtonContainer.add(DeleteButton);
 
+    ResetButton = new JButton("Reset");
+    ResetButton.setSize(100, 20);
+
     ControlPane.add(FieldContainer);
     ControlPane.add(ButtonContainer);
+    ControlPane.add(ResetButton);
   }
 
   private void prepareLeftPanel() {

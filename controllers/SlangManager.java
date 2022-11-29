@@ -333,6 +333,7 @@ public class SlangManager {
       setUserSlang();
       ArrayList<String> data = new ArrayList<String>();
       setSlangList(data);
+      loadSlangs();
     } catch (Exception e) {
       System.out.println("Error when reset slang");
     }

@@ -279,6 +279,7 @@ ABP`Already Been Posted
 ABS`Absolutely
 ABT`About
 ABT2`About To
+ABU`Anyone but Manchester United
 AC`Air Conditioning| Alternating Current
 AC/DC`Rock Band
 ACAPELLA`Vocal music without instruments
@@ -2067,6 +2068,7 @@ FAA`Federal Aviation Administration
 FAAB`Female-Assigned At Birth
 FAAK`Falling Asleep At Keyboard
 FAB`Fabulous
+FABU`Fabulous
 FACE PALM`Slap forehead with the palm of your hand
 FADE`Kill| disgrace
 FADED`High| stoned| drunk
@@ -2083,6 +2085,7 @@ FAMO`Friend| dude| family member etc
 FAMS`Family
 FANFIC`Fanfiction
 FANNYING`Wasting time| messing about
+FANTABULOUS`Fantastic and fabulous
 FAO`For Attention Of
 FAQ`Frequently Asked Question
 FASHO`For sure
@@ -7657,4 +7660,4 @@ ZZZ`Sleepy| bored| tired
 ~`Denotes Sarcasm| Put At The End Of A Word To Make It Longer
 Æ`Registered Trademark Symbol
 ô`Trademark
-ABBBBB`
+ABBBBB`123
