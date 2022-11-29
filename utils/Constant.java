@@ -31,7 +31,7 @@ public final class Constant {
 
   public static String LOG_SEPARATOR_TIME_CONTENT = " ----- ";
   public static String LOG_SEPARATOR_SLANG_DEFINITION = ":";
-  public static String LOG_SEPARATOR_DEFINITION_DEFINITION = "\\| ";
+  public static String LOG_SEPARATOR_DEFINITION_DEFINITION = ", ";
 
   public static String DB_SEPARATOR_SLANG_DEFINITION = "`";
 

@@ -1,34 +1,7 @@
-[2022/11/29 14:13:43] ----- N:And
-[2022/11/29 14:21:38] ----- ABU:Anyone but Manchester United
-[2022/11/29 14:21:41] ----- ABU:Anyone but Manchester United
-[2022/11/29 14:24:10] ----- G:Grin
-[2022/11/29 14:24:18] ----- G:Grin
-[2022/11/29 14:24:23] ----- U:You
-[2022/11/29 14:24:26] ----- U:You
-[2022/11/29 14:24:28] ----- U:You
-[2022/11/29 14:24:33] ----- N:And
-[2022/11/29 14:24:33] ----- NA:Not Available\| Not Applicable\| Not Announced
-[2022/11/29 14:24:36] ----- N:And
-[2022/11/29 14:34:56] ----- N:And
-[2022/11/29 14:34:56] ----- N:And
-[2022/11/29 14:34:57] ----- NA:Not Available\| Not Applicable\| Not Announced
-[2022/11/29 15:16:43] ----- ABBBBB:nam test 1
-[2022/11/29 15:16:59] ----- ABBBBB:nam test
-[2022/11/29 15:25:19] ----- ABBBBB:nam test
-[2022/11/29 15:25:34] ----- ABBBBB:nam test, nam edit
-[2022/11/29 15:25:49] ----- ABBBBB:
-[2022/11/29 15:35:37] ----- ABU:Anyone but Manchester United
-[2022/11/29 15:37:27] ----- ABU:Anyone but Manchester United
-[2022/11/29 15:37:33] ----- ABU:Anyone but Manchester United
-[2022/11/29 15:47:01] ----- N:And
-[2022/11/29 15:47:02] ----- N:And
-[2022/11/29 15:47:03] ----- N:And
-[2022/11/29 15:47:34] ----- ABBBBB:123
-[2022/11/29 16:39:00] ----- /W:Whisper
-[2022/11/29 16:39:58] ----- DIBS:A claim
-[2022/11/29 16:47:59] ----- C:See\| Computer language\| Speed of light
-[2022/11/29 16:48:00] ----- CAKE:Kilo of cocaine
-[2022/11/29 16:59:50] ----- L:Laugh
-[2022/11/29 16:59:50] ----- LF:Looking For
-[2022/11/29 16:59:51] ----- LFG:Looking For Group
-[2022/11/29 17:00:18] ----- LFG:Looking For Group
+[2022/11/29 17:36:42] ----- ABU:Anyone but Manchester United
+[2022/11/29 17:36:51] ----- ABU:Anyone United
+[2022/11/29 17:38:47] ----- ABU:Anyone United
+[2022/11/29 17:39:02] ----- ABU:Anyone United
+[2022/11/29 17:39:36] ----- ABU:Anyone but Manchester United
+[2022/11/29 17:39:40] ----- ABU:Anyone but Manchester United
+[2022/11/29 17:39:41] ----- ABU:Anyone but Manchester United

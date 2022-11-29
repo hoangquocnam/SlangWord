@@ -28,6 +28,7 @@ import utils.Constant;
 public class FormPane extends JPanel {
 
   static SlangManager slangManager = new SlangManager();
+  static String SlangSelected = "";
 
   // LEFT
   JPanel LeftPanel;
@@ -129,12 +130,13 @@ public class FormPane extends JPanel {
           String keyword = SearchField.getText();
           String type = SearchTypeBox.getSelectedItem().toString();
           if (type.equals(Constant.SEARCH_TYPES[0])) {
-            searchTable(slangManager.searchBySlang(keyword, true));
+            searchTable(slangManager.searchBySlang(keyword));
           } else if (type.equals(Constant.SEARCH_TYPES[1])) {
-            searchTable(slangManager.searchByDefinition(keyword, true));
+            searchTable(slangManager.searchByDefinition(keyword));
           } else if (type.equals(Constant.SEARCH_TYPES[2])) {
-            searchTable(slangManager.searchByAll(keyword, true));
+            searchTable(slangManager.searchByAll(keyword));
           }
+          slangManager.logHistory(Constant.SlangType.KEYWORD, keyword);
         }
       }
     );
@@ -145,11 +147,11 @@ public class FormPane extends JPanel {
           String keyword = SearchField.getText();
           String type = SearchTypeBox.getSelectedItem().toString();
           if (type.equals(Constant.SEARCH_TYPES[0])) {
-            searchTable(slangManager.searchBySlang(keyword, false));
+            searchTable(slangManager.searchBySlang(keyword));
           } else if (type.equals(Constant.SEARCH_TYPES[1])) {
-            searchTable(slangManager.searchByDefinition(keyword, false));
+            searchTable(slangManager.searchByDefinition(keyword));
           } else if (type.equals(Constant.SEARCH_TYPES[2])) {
-            searchTable(slangManager.searchByAll(keyword, false));
+            searchTable(slangManager.searchByAll(keyword));
           }
         }
       }

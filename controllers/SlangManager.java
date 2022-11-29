@@ -120,23 +120,48 @@ public class SlangManager {
     ArrayList<String> historyLog = datasourceManager.getData(
       Constant.SLANG_HISTORY_PATH
     );
-
-    for (String log : historyLog) {
-      ArrayList<String> history = new ArrayList<String>();
-      String slangHistory = log.split(Constant.LOG_SEPARATOR_TIME_CONTENT)[1];
-      String[] slangHistoryArray = slangHistory.split(
-        Constant.LOG_SEPARATOR_SLANG_DEFINITION
-      );
-      if (slangHistoryArray.length == 2) {
-        String slang = slangHistoryArray[0];
-        String[] slangMeaningArray =
-          slangHistoryArray[1].split(
-              Constant.LOG_SEPARATOR_DEFINITION_DEFINITION
-            );
-        for (int j = 0; j < slangMeaningArray.length; j++) {
-          history.add(slangMeaningArray[j]);
+    if (historyLog != null) {
+      for (String log : historyLog) {
+        ArrayList<String> history = new ArrayList<String>();
+        String slangHistory = log.split(Constant.LOG_SEPARATOR_TIME_CONTENT)[1];
+        String[] slangHistoryArray = slangHistory.split(
+          Constant.LOG_SEPARATOR_SLANG_DEFINITION
+        );
+        if (slangHistoryArray.length == 2) {
+          String slang = slangHistoryArray[0];
+          String[] slangMeaningArray =
+            slangHistoryArray[1].split(
+                Constant.LOG_SEPARATOR_DEFINITION_DEFINITION
+              );
+          for (int j = 0; j < slangMeaningArray.length; j++) {
+            history.add(slangMeaningArray[j]);
+          }
+          historyMap.put(slang, history);
         }
-        historyMap.put(slang, history);
+      }
+    }
+
+    ArrayList<String> historyLogAdd = datasourceManager.getData(
+      Constant.MEANING_HISTORY_PATH
+    );
+    if (historyLogAdd != null) {
+      for (String log : historyLogAdd) {
+        ArrayList<String> history = new ArrayList<String>();
+        String slangHistory = log.split(Constant.LOG_SEPARATOR_TIME_CONTENT)[1];
+        String[] slangHistoryArray = slangHistory.split(
+          Constant.LOG_SEPARATOR_SLANG_DEFINITION
+        );
+        if (slangHistoryArray.length == 2) {
+          String slang = slangHistoryArray[0];
+          String[] slangMeaningArray =
+            slangHistoryArray[1].split(
+                Constant.LOG_SEPARATOR_DEFINITION_DEFINITION
+              );
+          for (int j = 0; j < slangMeaningArray.length; j++) {
+            history.add(slangMeaningArray[j]);
+          }
+          historyMap.put(slang, history);
+        }
       }
     }
   }
@@ -189,12 +214,14 @@ public class SlangManager {
             slang = key;
           }
         }
-        String historyMeaning =
-          timeLog + slang + Constant.LOG_SEPARATOR_SLANG_DEFINITION + data;
-        datasourceManager.writeData(
-          Constant.MEANING_HISTORY_PATH,
-          historyMeaning
-        );
+        if (slang != "") {
+          String historyMeaning =
+            timeLog + slang + Constant.LOG_SEPARATOR_SLANG_DEFINITION + data;
+          datasourceManager.writeData(
+            Constant.MEANING_HISTORY_PATH,
+            historyMeaning
+          );
+        }
         break;
       case KEYWORD:
         String historyKeyWord = timeLog + data;
@@ -208,26 +235,18 @@ public class SlangManager {
     }
   }
 
-  public TreeMap<String, ArrayList<String>> searchBySlang(
-    String keyword,
-    boolean isPressSearch
-  ) {
+  public TreeMap<String, ArrayList<String>> searchBySlang(String keyword) {
     TreeMap<String, ArrayList<String>> result = new TreeMap<String, ArrayList<String>>();
     for (String slang : slangMap.keySet()) {
       if (slang.contains(keyword)) {
         result.put(slang, slangMap.get(slang));
       }
     }
-    if (isPressSearch) {
-      logHistory(Constant.SlangType.SLANG, keyword);
-    }
+    logHistory(Constant.SlangType.SLANG, keyword);
     return result;
   }
 
-  public TreeMap<String, ArrayList<String>> searchByDefinition(
-    String keyword,
-    boolean isPressSearch
-  ) {
+  public TreeMap<String, ArrayList<String>> searchByDefinition(String keyword) {
     try {
       TreeMap<String, ArrayList<String>> result = new TreeMap<String, ArrayList<String>>();
       for (String slang : slangMap.keySet()) {
@@ -237,32 +256,25 @@ public class SlangManager {
           }
         }
       }
-      if (isPressSearch) {
-        logHistory(Constant.SlangType.MEANING, keyword);
-      }
+      logHistory(Constant.SlangType.MEANING, keyword);
+
       return result;
     } catch (Exception e) {
       return null;
     }
   }
 
-  public TreeMap<String, ArrayList<String>> searchByAll(
-    String keyword,
-    boolean isPressSearch
-  ) {
+  public TreeMap<String, ArrayList<String>> searchByAll(String keyword) {
     TreeMap<String, ArrayList<String>> result = new TreeMap<String, ArrayList<String>>();
-    for (String slang : slangMap.keySet()) {
-      if (slang.contains(keyword)) {
-        result.put(slang, slangMap.get(slang));
-      }
-      for (String meaning : slangMap.get(slang)) {
-        if (meaning.contains(keyword)) {
-          result.put(slang, slangMap.get(slang));
-        }
-      }
+    TreeMap<String, ArrayList<String>> resultSlang = searchBySlang(keyword);
+    TreeMap<String, ArrayList<String>> resultMeaning = searchByDefinition(
+      keyword
+    );
+    if (resultSlang != null) {
+      result.putAll(resultSlang);
     }
-    if (isPressSearch) {
-      logHistory(Constant.SlangType.KEYWORD, keyword);
+    if (resultMeaning != null) {
+      result.putAll(resultMeaning);
     }
     return result;
   }
