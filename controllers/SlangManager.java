@@ -319,15 +319,8 @@ public class SlangManager {
 
   public void removeSlang(String slang) {
     try {
-      // Ask user to confirm
-      System.out.println("Are you sure you want to delete this slang? (Y/N)");
-      String answer = System.console().readLine();
-      if (
-        answer.toLowerCase().equals("y") || answer.toLowerCase().equals("yes")
-      ) {
-        slangMap.remove(slang);
-        datasourceManager.removeLine(Constant.USER_SLANG_DATASOURCE, slang);
-      }
+      slangMap.remove(slang);
+      datasourceManager.removeLine(Constant.USER_SLANG_DATASOURCE, slang);
     } catch (Exception e) {
       System.out.println("Slang word: " + slang + " does not exist");
     }

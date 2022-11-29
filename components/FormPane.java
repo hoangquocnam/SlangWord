@@ -215,6 +215,8 @@ public class FormPane extends JPanel {
             slangManager.addSlang(slang, definitions, true);
             searchTable(slangManager.getAllSlang());
           }
+          ControlSlangField.setText("");
+          ControlDefinitionField.setText("");
         }
       }
     );
@@ -226,9 +228,31 @@ public class FormPane extends JPanel {
           String definition = ControlDefinitionField.getText();
           ArrayList<String> definitions = new ArrayList<String>();
           definitions.add(definition);
-          
           slangManager.editSlang(slang, definitions);
           searchTable(slangManager.getAllSlang());
+          ControlSlangField.setText("");
+          ControlDefinitionField.setText("");
+        }
+      }
+    );
+
+    DeleteButton.addActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent event) {
+          String slang = ControlSlangField.getText();
+          int result = JOptionPane.showConfirmDialog(
+            null,
+            "Do you want to delete it?",
+            "Delete slang",
+            JOptionPane.YES_NO_OPTION
+          );
+
+          if (result == JOptionPane.YES_OPTION) {
+            slangManager.removeSlang(slang);
+            searchTable(slangManager.getAllSlang());
+            ControlSlangField.setText("");
+            ControlDefinitionField.setText("");
+          }
         }
       }
     );
