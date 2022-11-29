@@ -47,7 +47,7 @@ public class QuizPane extends JPanel {
   }
 
   public void prepareMeaningGameUI() {
-    quiz = slangManager.quizSlangGame();
+    quiz = slangManager.quizDefinitionGame();
     quizPanel = new JPanel(new BorderLayout());
 
     questionLabel =

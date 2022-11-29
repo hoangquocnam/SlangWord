@@ -8,3 +8,26 @@
 [2022/11/29 19:23:20] ----- N:And
 [2022/11/29 19:23:20] ----- N/T:No Text
 [2022/11/29 19:23:25] ----- N:And
+[2022/11/29 19:50:32] ----- ABU:Anyone but Manchester United
+[2022/11/29 19:52:01] ----- ('_'):Emoticon Representing Boredom
+[2022/11/29 19:52:08] ----- ('_'):Emoticon Representing Boredom
+[2022/11/29 19:53:10] ----- 10-1:Radio code for 'Receiving poorly'
+[2022/11/29 19:53:58] ----- N:And
+[2022/11/29 19:53:58] ----- NA:Not Available, Not Applicable, Not Announced
+[2022/11/29 19:54:13] ----- NAMMM:Nam test
+[2022/11/29 19:55:00] ----- NAMMM:Nam test, nam test add 1
+[2022/11/29 19:55:16] ----- NAMMM:nam test 2
+[2022/11/29 19:55:42] ----- NAMMM:nam test 
+[2022/11/29 19:55:57] ----- NAMMM:nam test 
+[2022/11/29 19:55:59] ----- NAM:nam test 
+[2022/11/29 19:56:03] ----- NAM:nam test 
+[2022/11/29 19:56:30] ----- NAM:nam test 
+[2022/11/29 19:57:06] ----- NAMTest:nam test 
+[2022/11/29 19:57:10] ----- NAMTest:nam test 
+[2022/11/29 19:57:51] ----- L:Laugh
+[2022/11/29 19:57:51] ----- LO:Hello, Little One
+[2022/11/29 19:57:53] ----- LOL:Laughing Out Loud
+[2022/11/29 19:57:53] ----- LOLX:LOL
+[2022/11/29 19:58:05] ----- O:Ounce
+[2022/11/29 19:58:06] ----- OT:Off Topic
+[2022/11/29 19:58:06] ----- OTF:Off Topic Forum
